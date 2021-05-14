@@ -16,14 +16,17 @@ public class AnalyzeDataWindow extends JFrame implements BaseView {
     private JButton threeBtn = new JButton("Три");
     private JButton saveBtn = new JButton("Сохранить");
 
+    private int currentTable = 0;
+
 
     private int id;
     private MenuWindow window;
 
-    AnalyzeDataWindow(int id, MenuWindow window) {
+    AnalyzeDataWindow(int id, MenuWindow window, int currentTable) {
         super("Конструктор отчетов");
         setDefaultCloseOperation(HIDE_ON_CLOSE);
         this.id = id;
+        this.currentTable = currentTable;
         this.window = window;
         controller.attachView(this);
         initWindow();
@@ -35,9 +38,19 @@ public class AnalyzeDataWindow extends JFrame implements BaseView {
         SpringLayout springLayout = new SpringLayout();
         getContentPane().setLayout(springLayout);
 
+        if (currentTable == 0) {
+            executeBtn.setText("Запрос1_1");
+        } else if (currentTable == 1) {
+            executeBtn.setText("Запрос2_1");
+        }
+
         getContentPane().add(executeBtn);
         executeBtn.addActionListener(e -> {
-            controller.executeQueries("SELECT u_login as T1 FROM USERS");
+            if (currentTable == 0) {
+                controller.executeQueries("SELECT u_login as T1 FROM USERS");
+            } else if (currentTable == 1) {
+                controller.executeQueries("SELECT * from USERS");
+            }
         });
 
         springLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, executeBtn, 0, SpringLayout.HORIZONTAL_CENTER, getContentPane());
@@ -45,7 +58,7 @@ public class AnalyzeDataWindow extends JFrame implements BaseView {
 
         getContentPane().add(saveBtn);
         saveBtn.addActionListener(e -> {
-
+            controller.executeQueries("SELECT u_login as T1 FROM USERS");
         });
 
         springLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, saveBtn, 0, SpringLayout.HORIZONTAL_CENTER, executeBtn);
@@ -53,6 +66,7 @@ public class AnalyzeDataWindow extends JFrame implements BaseView {
 
         getContentPane().add(threeBtn);
         threeBtn.addActionListener(e -> {
+            controller.executeQueries("SELECT u_login as T1 FROM USERS");
         });
         springLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, threeBtn, 0, SpringLayout.HORIZONTAL_CENTER, saveBtn);
         springLayout.putConstraint(SpringLayout.NORTH, threeBtn, 20, SpringLayout.SOUTH, saveBtn);

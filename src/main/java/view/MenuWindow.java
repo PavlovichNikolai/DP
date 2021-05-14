@@ -1,7 +1,6 @@
 package view;
 
 import base.BaseView;
-import contoller.ChartsController;
 
 import javax.swing.*;
 
@@ -29,14 +28,17 @@ public class MenuWindow extends JFrame implements BaseView {
 
         getContentPane().add(analyzeBtn);
         analyzeBtn.addActionListener(e -> {
-            new AnalyzeDataWindow(id, this).setVisible(true);
+            new AnalyzeDataWindow(id, this, 0).setVisible(true);
             this.setVisible(false);
         });
         springLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, analyzeBtn, 0, SpringLayout.HORIZONTAL_CENTER, getContentPane());
         springLayout.putConstraint(SpringLayout.NORTH, analyzeBtn, 20, SpringLayout.NORTH, getContentPane());
 
         getContentPane().add(showCharts);
-        showCharts.addActionListener(e -> new ChartsController().showCharts());
+        showCharts.addActionListener(e -> {
+            new AnalyzeDataWindow(id, this, 1).setVisible(true);
+            this.setVisible(false);
+        });
         springLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, showCharts, 0, SpringLayout.HORIZONTAL_CENTER, getContentPane());
         springLayout.putConstraint(SpringLayout.NORTH, showCharts, 20, SpringLayout.SOUTH, analyzeBtn);
 

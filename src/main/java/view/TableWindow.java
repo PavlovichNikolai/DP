@@ -2,6 +2,7 @@ package view;
 
 import base.BaseView;
 import com.google.gson.Gson;
+import contoller.ChartsController;
 
 import javax.swing.*;
 import java.io.FileWriter;
@@ -13,6 +14,7 @@ public class TableWindow extends JFrame implements BaseView {
 
     private JTable table;
     private JButton btnSave;
+    private JButton btnShowCharts;
     private List<String> headers;
     private List<List<String>> data;
 
@@ -26,6 +28,7 @@ public class TableWindow extends JFrame implements BaseView {
         this.data = data;
         table = new JTable(vectorData, new Vector<>(headers));
         btnSave = new JButton("Сохранить");
+        btnShowCharts = new JButton("Визуализация");
         initWindow();
     }
 
@@ -53,9 +56,13 @@ public class TableWindow extends JFrame implements BaseView {
 
         getContentPane().add(btnSave);
         springLayout.putConstraint(SpringLayout.WEST, btnSave, 0, SpringLayout.EAST, table);
-        springLayout.putConstraint(SpringLayout.NORTH, table, 20, SpringLayout.NORTH, getContentPane());
+        springLayout.putConstraint(SpringLayout.NORTH, btnSave, 20, SpringLayout.NORTH, getContentPane());
 
-        btnSave.addActionListener(e -> saveTable());
+        getContentPane().add(btnShowCharts);
+        springLayout.putConstraint(SpringLayout.WEST, btnShowCharts, 0, SpringLayout.EAST, table);
+        springLayout.putConstraint(SpringLayout.NORTH, btnShowCharts, 20, SpringLayout.SOUTH, btnSave);
+
+        btnShowCharts.addActionListener(e -> new ChartsController().showCharts());
 
     }
 
