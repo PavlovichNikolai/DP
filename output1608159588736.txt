@@ -1,0 +1,2 @@
+Column names:["surname","amount"]
+Data: [["Paulovich","220"],["Ivanov","100"],["Petrov","155"]]

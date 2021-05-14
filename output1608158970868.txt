@@ -1,0 +1,2 @@
+Column names:["surname","amount"]
+Data: [["surname","220"],["surname1","100"]]
