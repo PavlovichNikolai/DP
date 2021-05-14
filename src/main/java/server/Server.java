@@ -37,8 +37,8 @@ public class Server {
                             "&useLegacyDatetimeCode=false" +
                             "&amp" +
                             "&serverTimezone=UTC",
-                    "Nikolai",
-                    "12345678");
+                    "Sergei",
+                    "12345");
             statement = db.createStatement();
             socket = new ServerSocket(1024);
         } catch (SQLException | IOException e) {

@@ -9,6 +9,7 @@ public class MenuWindow extends JFrame implements BaseView {
     private JButton analyzeBtn = new JButton("Анализ");
     private JButton showCharts = new JButton("Графики");
     private JButton showAllUsersBtn = new JButton("Показать всех пользователей");
+    private JButton fourthButton = new JButton("Четыре");
 
     private int role;
     private int id;
@@ -44,6 +45,12 @@ public class MenuWindow extends JFrame implements BaseView {
         showAllUsersBtn.addActionListener(e -> new ShowUsersWindow(id).setVisible(true));
         springLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, showAllUsersBtn, 0, SpringLayout.HORIZONTAL_CENTER, getContentPane());
         springLayout.putConstraint(SpringLayout.NORTH, showAllUsersBtn, 20, SpringLayout.SOUTH, showCharts);
+
+        getContentPane().add(fourthButton);
+//        fourthButton.setVisible(role == 1);
+//        fourthButton.addActionListener(e -> new ShowUsersWindow(id).setVisible(true));
+        springLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, fourthButton, 0, SpringLayout.HORIZONTAL_CENTER, getContentPane());
+        springLayout.putConstraint(SpringLayout.NORTH, fourthButton, 20, SpringLayout.SOUTH, showAllUsersBtn);
 
         setSize(300, 300);
 

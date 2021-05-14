@@ -18,16 +18,5 @@ public class AnalyzeDataController extends BaseController<AnalyzeDataWindow> {
         String responseStr = getDataFromServer();
         AnalysisModel model = new Gson().fromJson(responseStr, AnalysisModel.class);
         new TableWindow(model.getHeaders(), model.getData()).setVisible(true);
-
-        String name = "output" + System.currentTimeMillis() + ".txt";
-
-        try {
-            FileWriter writer = new FileWriter(name);
-            writer.write("Column names:" + new Gson().toJson(model.getHeaders()) + "\n");
-            writer.write("Data: " + new Gson().toJson(model.getData()));
-            writer.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 }
