@@ -13,8 +13,8 @@ public class AnalyzeDataWindow extends JFrame implements BaseView {
     private Vector<String> columnNames = new Vector<>();
     private JButton backBtn = new JButton("Назад");
     private JButton executeBtn = new JButton("Выполнить");
-    private JButton threeBtn = new JButton("Три");
-    private JButton saveBtn = new JButton("Сохранить");
+    private JButton threeBtn = new JButton("Статистика активности участника");
+    private JButton saveBtn = new JButton("Ранжирование по сумме транзакций");
 
     private int currentTable = 0;
 
@@ -38,19 +38,11 @@ public class AnalyzeDataWindow extends JFrame implements BaseView {
         SpringLayout springLayout = new SpringLayout();
         getContentPane().setLayout(springLayout);
 
-        if (currentTable == 0) {
-            executeBtn.setText("Запрос1_1");
-        } else if (currentTable == 1) {
-            executeBtn.setText("Запрос2_1");
-        }
+        executeBtn.setText("Статистика активных пользователей");
 
         getContentPane().add(executeBtn);
         executeBtn.addActionListener(e -> {
-            if (currentTable == 0) {
-                controller.executeQueries("SELECT u_login as T1 FROM USERS");
-            } else if (currentTable == 1) {
-                controller.executeQueries("SELECT * from USERS");
-            }
+            controller.executeQueries(1, currentTable);
         });
 
         springLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, executeBtn, 0, SpringLayout.HORIZONTAL_CENTER, getContentPane());
@@ -58,7 +50,7 @@ public class AnalyzeDataWindow extends JFrame implements BaseView {
 
         getContentPane().add(saveBtn);
         saveBtn.addActionListener(e -> {
-            controller.executeQueries("SELECT u_login as T1 FROM USERS");
+//            controller.executeQueries("SELECT u_login as T1 FROM USERS");
         });
 
         springLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, saveBtn, 0, SpringLayout.HORIZONTAL_CENTER, executeBtn);
@@ -66,7 +58,7 @@ public class AnalyzeDataWindow extends JFrame implements BaseView {
 
         getContentPane().add(threeBtn);
         threeBtn.addActionListener(e -> {
-            controller.executeQueries("SELECT u_login as T1 FROM USERS");
+//            controller.executeQueries("SELECT u_login as T1 FROM USERS");
         });
         springLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, threeBtn, 0, SpringLayout.HORIZONTAL_CENTER, saveBtn);
         springLayout.putConstraint(SpringLayout.NORTH, threeBtn, 20, SpringLayout.SOUTH, saveBtn);

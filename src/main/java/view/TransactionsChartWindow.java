@@ -3,21 +3,17 @@ package view;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
-import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.ui.ApplicationFrame;
-import org.jfree.data.category.CategoryDataset;
+import org.jfree.data.general.PieDataset;
 
 public class TransactionsChartWindow extends ApplicationFrame {
 
-    public TransactionsChartWindow(String title, CategoryDataset dataset) {
+    public TransactionsChartWindow(String title, PieDataset dataset) {
         super(title);
         setDefaultCloseOperation(HIDE_ON_CLOSE);
-        JFreeChart barChart = ChartFactory.createBarChart(
-                title,
+        JFreeChart barChart = ChartFactory.createPieChart(
                 "Клиенты",
-                "Сумма транзакций",
                 dataset,
-                PlotOrientation.VERTICAL,
                 true,
                 true,
                 false

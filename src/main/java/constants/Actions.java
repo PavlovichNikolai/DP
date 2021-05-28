@@ -14,4 +14,5 @@ public class Actions {
     public static final String GET_TRANSACTIONS_FOR_CHART = "GET_TRANSACTIONS_FOR_CHART";
     public static final String GET_ALL_USER_PROPERTIES = "GET_ALL_USER_PROPERTIES";
     public static final String SEND_QUERY = "SEND_QUERY";
+    public static final String GET_MENU_BUTTONS = "GET_MENU_BUTTONS";
 }

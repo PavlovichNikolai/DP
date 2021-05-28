@@ -1,60 +1,39 @@
 package view;
 
 import base.BaseView;
+import contoller.MenuController;
+import entities.MenuButtonModel;
 
 import javax.swing.*;
+import java.util.List;
 
 public class MenuWindow extends JFrame implements BaseView {
-    private JButton analyzeBtn = new JButton("Анализ");
-    private JButton showCharts = new JButton("Графики");
-    private JButton showAllUsersBtn = new JButton("Показать всех пользователей");
-    private JButton fourthButton = new JButton("Четыре");
 
     private int role;
     private int id;
 
     public MenuWindow(int role, int id) {
-        super("Меню");
+        super("Области анализа");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.id = id;
         this.role = role;
         initWindow();
+        MenuController controller = new MenuController();
+        controller.attachView(this);
+        controller.getButtons();
     }
 
     @Override
     public void initWindow() {
-        SpringLayout springLayout = new SpringLayout();
-        getContentPane().setLayout(springLayout);
-
-        getContentPane().add(analyzeBtn);
-        analyzeBtn.addActionListener(e -> {
-            new AnalyzeDataWindow(id, this, 0).setVisible(true);
-            this.setVisible(false);
-        });
-        springLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, analyzeBtn, 0, SpringLayout.HORIZONTAL_CENTER, getContentPane());
-        springLayout.putConstraint(SpringLayout.NORTH, analyzeBtn, 20, SpringLayout.NORTH, getContentPane());
-
-        getContentPane().add(showCharts);
-        showCharts.addActionListener(e -> {
-            new AnalyzeDataWindow(id, this, 1).setVisible(true);
-            this.setVisible(false);
-        });
-        springLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, showCharts, 0, SpringLayout.HORIZONTAL_CENTER, getContentPane());
-        springLayout.putConstraint(SpringLayout.NORTH, showCharts, 20, SpringLayout.SOUTH, analyzeBtn);
-
-        getContentPane().add(showAllUsersBtn);
-        showAllUsersBtn.setVisible(role == 1);
-        showAllUsersBtn.addActionListener(e -> new ShowUsersWindow(id).setVisible(true));
-        springLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, showAllUsersBtn, 0, SpringLayout.HORIZONTAL_CENTER, getContentPane());
-        springLayout.putConstraint(SpringLayout.NORTH, showAllUsersBtn, 20, SpringLayout.SOUTH, showCharts);
-
-        getContentPane().add(fourthButton);
-//        fourthButton.setVisible(role == 1);
-//        fourthButton.addActionListener(e -> new ShowUsersWindow(id).setVisible(true));
-        springLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, fourthButton, 0, SpringLayout.HORIZONTAL_CENTER, getContentPane());
-        springLayout.putConstraint(SpringLayout.NORTH, fourthButton, 20, SpringLayout.SOUTH, showAllUsersBtn);
-
+        getContentPane().setLayout(new java.awt.GridLayout(0, 1));
         setSize(300, 300);
+    }
 
+    public void showButtons(List<MenuButtonModel> buttons) {
+        buttons.forEach(it -> {
+            JButton button = new JButton(it.getName());
+            button.addActionListener(actionEvent -> new AnalyzeDataWindow(id, this, it.getId()).setVisible(true));
+            add(button);
+        });
     }
 }

@@ -3,6 +3,7 @@ package server;
 import com.google.gson.Gson;
 import constants.Actions;
 import entities.AnalysisModel;
+import entities.MenuButtonModel;
 import entities.TransactionModel;
 
 import java.io.IOException;
@@ -89,8 +90,9 @@ public class Server {
                                 executeQueries(outputStream, queryContent);
                             } else if (clientAction.equalsIgnoreCase(Actions.GET_TRANSACTIONS_FOR_CHART)) {
                                 getTransactionsForChart(outputStream);
+                            } else if (clientAction.equalsIgnoreCase(Actions.GET_MENU_BUTTONS)) {
+                                getMenuButtons(outputStream);
                             }
-
                         }
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -99,6 +101,19 @@ public class Server {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    private void getMenuButtons(OutputStream outputStream) {
+        try {
+            ResultSet resultSet = statement.executeQuery("select * from screen_analyze;");
+            List<MenuButtonModel> menuButtonModelList = new ArrayList<>();
+            while (resultSet.next()) {
+                menuButtonModelList.add(new MenuButtonModel(resultSet.getInt("id"), resultSet.getString("name")));
+            }
+            sendDataToClient(outputStream, new Gson().toJson(menuButtonModelList));
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 
@@ -177,8 +192,13 @@ public class Server {
 
     private void executeQueries(OutputStream outputStream, String queryContent) {
         try {
+            int actionId = Integer.parseInt(queryContent.split(" ")[0]);
+            int buttonId = Integer.parseInt(queryContent.split(" ")[1]);
             System.out.println(queryContent);
-            ResultSet resultSet = statement.executeQuery(queryContent);
+
+            ResultSet resultSet = statement.executeQuery("select analyze_text from query where id_but=" + buttonId + " AND id_act=" + actionId);
+            resultSet.first();
+            resultSet = statement.executeQuery(resultSet.getString("analyze_text"));
             ResultSetMetaData rsmd = resultSet.getMetaData();
             int columnsNumber = rsmd.getColumnCount();
 

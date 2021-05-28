@@ -7,6 +7,8 @@ import constants.Actions;
 import entities.TransactionModel;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
+import org.jfree.data.general.DefaultPieDataset;
+import org.jfree.data.general.PieDataset;
 import view.TransactionsChartWindow;
 
 import java.util.ArrayList;
@@ -22,8 +24,8 @@ public class ChartsController extends BaseController {
         new TransactionsChartWindow("Transactions", getDistanceFromCenterBarChartData()).setVisible(true);
     }
 
-    private CategoryDataset getDistanceFromCenterBarChartData() {
-        final DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+    private PieDataset getDistanceFromCenterBarChartData() {
+        final DefaultPieDataset dataset = new DefaultPieDataset();
 
         sendDataToServer(Actions.GET_TRANSACTIONS_FOR_CHART);
         sendDataToServer(" ");
@@ -32,7 +34,7 @@ public class ChartsController extends BaseController {
         List<TransactionModel> transactions = new Gson().fromJson(transactionsStr, new TypeToken<ArrayList<TransactionModel>>() {
         }.getType());
 
-        transactions.forEach(it -> dataset.addValue(it.getSum(), "Transactions", it.getName()));
+        transactions.forEach(it -> dataset.setValue(it.getName(), it.getSum()));
         return dataset;
     }
 
