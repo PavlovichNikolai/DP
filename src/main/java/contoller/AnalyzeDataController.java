@@ -14,6 +14,6 @@ public class AnalyzeDataController extends BaseController<AnalyzeDataWindow> {
         sendDataToServer(actionNumber + " " + currentTable);
         String responseStr = getDataFromServer();
         AnalysisModel model = new Gson().fromJson(responseStr, AnalysisModel.class);
-        new TableWindow(model.getHeaders(), model.getData()).setVisible(true);
+        new TableWindow(model.getHeaders(), model.getData(), actionNumber, currentTable).setVisible(true);
     }
 }

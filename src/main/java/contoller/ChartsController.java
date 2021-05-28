@@ -5,8 +5,6 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import constants.Actions;
 import entities.TransactionModel;
-import org.jfree.data.category.CategoryDataset;
-import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
 import org.jfree.data.general.PieDataset;
 import view.TransactionsChartWindow;
@@ -16,19 +14,15 @@ import java.util.List;
 
 public class ChartsController extends BaseController {
 
-    public void showCharts() {
-        showDistanceFromCenterBarChartWindow();
+    public void showCharts(int actionNumber, int currentTable) {
+        new TransactionsChartWindow("Визуализация", getDistanceFromCenterBarChartData(actionNumber, currentTable)).setVisible(true);
     }
 
-    private void showDistanceFromCenterBarChartWindow() {
-        new TransactionsChartWindow("Transactions", getDistanceFromCenterBarChartData()).setVisible(true);
-    }
-
-    private PieDataset getDistanceFromCenterBarChartData() {
+    private PieDataset getDistanceFromCenterBarChartData(int actionNumber, int currentTable) {
         final DefaultPieDataset dataset = new DefaultPieDataset();
 
-        sendDataToServer(Actions.GET_TRANSACTIONS_FOR_CHART);
-        sendDataToServer(" ");
+        sendDataToServer(Actions.GET_VISUALIZATION_DATA);
+        sendDataToServer(actionNumber + " " + currentTable);
         String transactionsStr = getDataFromServer();
 
         List<TransactionModel> transactions = new Gson().fromJson(transactionsStr, new TypeToken<ArrayList<TransactionModel>>() {

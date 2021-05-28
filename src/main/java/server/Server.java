@@ -88,8 +88,8 @@ public class Server {
                                 getAllUsers(outputStream);
                             } else if (clientAction.equalsIgnoreCase(Actions.SEND_QUERY)) {
                                 executeQueries(outputStream, queryContent);
-                            } else if (clientAction.equalsIgnoreCase(Actions.GET_TRANSACTIONS_FOR_CHART)) {
-                                getTransactionsForChart(outputStream);
+                            } else if (clientAction.equalsIgnoreCase(Actions.GET_VISUALIZATION_DATA)) {
+                                getVisualizationForChart(outputStream, queryContent);
                             } else if (clientAction.equalsIgnoreCase(Actions.GET_MENU_BUTTONS)) {
                                 getMenuButtons(outputStream);
                             }
@@ -117,12 +117,22 @@ public class Server {
         }
     }
 
-    private void getTransactionsForChart(OutputStream outputStream) {
+    private void getVisualizationForChart(OutputStream outputStream, String queryContent) {
         try {
-            ResultSet resultSet = statement.executeQuery("select cl.cl_surname, sum(tr_amount) from transactions tr inner join clients cl on tr.cl_id = cl.cl_id group by cl.cl_surname;");
+            int actionId = Integer.parseInt(queryContent.split(" ")[0]);
+            int buttonId = Integer.parseInt(queryContent.split(" ")[1]);
+            System.out.println(queryContent);
+
+            ResultSet resultSet = statement.executeQuery("select visual_text from query where id_but=" + buttonId + " AND id_act=" + actionId);
+            resultSet.first();
+            resultSet = statement.executeQuery(resultSet.getString("visual_text"));
+            ResultSetMetaData rsmd = resultSet.getMetaData();
+            String keyColumn = rsmd.getColumnLabel(1);
+            String valueColumn = rsmd.getColumnLabel(2);
+
             List<TransactionModel> transactionModels = new ArrayList<>();
             while (resultSet.next()) {
-                transactionModels.add(new TransactionModel(resultSet.getString("cl_surname"), resultSet.getInt("sum(tr_amount)")));
+                transactionModels.add(new TransactionModel(resultSet.getString(keyColumn), resultSet.getInt(valueColumn)));
             }
             sendDataToClient(outputStream, new Gson().toJson(transactionModels));
         } catch (SQLException e) {

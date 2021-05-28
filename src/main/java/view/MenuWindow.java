@@ -32,7 +32,7 @@ public class MenuWindow extends JFrame implements BaseView {
     public void showButtons(List<MenuButtonModel> buttons) {
         buttons.forEach(it -> {
             JButton button = new JButton(it.getName());
-            button.addActionListener(actionEvent -> new AnalyzeDataWindow(id, this, it.getId()).setVisible(true));
+            button.addActionListener(actionEvent -> new AnalyzeDataWindow(this, it.getId()).setVisible(true));
             add(button);
         });
     }

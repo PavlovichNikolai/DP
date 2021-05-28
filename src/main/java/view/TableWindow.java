@@ -18,8 +18,11 @@ public class TableWindow extends JFrame implements BaseView {
     private List<String> headers;
     private List<List<String>> data;
 
+    private int actionNumber;
+    private int currentTable;
+
     @SuppressWarnings("unchecked")
-    public TableWindow(List<String> headers, List<List<String>> data) {
+    public TableWindow(List<String> headers, List<List<String>> data, int actionNumber, int currentTable) {
         super("Table");
         setDefaultCloseOperation(HIDE_ON_CLOSE);
         Vector<Vector<String>> vectorData = new Vector();
@@ -29,6 +32,8 @@ public class TableWindow extends JFrame implements BaseView {
         table = new JTable(vectorData, new Vector<>(headers));
         btnSave = new JButton("Сохранить");
         btnShowCharts = new JButton("Визуализация");
+        this.actionNumber = actionNumber;
+        this.currentTable = currentTable;
         initWindow();
     }
 
@@ -62,7 +67,9 @@ public class TableWindow extends JFrame implements BaseView {
         springLayout.putConstraint(SpringLayout.WEST, btnShowCharts, 0, SpringLayout.EAST, table);
         springLayout.putConstraint(SpringLayout.NORTH, btnShowCharts, 20, SpringLayout.SOUTH, btnSave);
 
-        btnShowCharts.addActionListener(e -> new ChartsController().showCharts());
+        btnShowCharts.addActionListener(e -> new ChartsController().showCharts(actionNumber, currentTable));
+
+        btnSave.addActionListener(e -> saveTable());
 
     }
 
