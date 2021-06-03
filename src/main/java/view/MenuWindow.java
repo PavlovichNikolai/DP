@@ -35,5 +35,14 @@ public class MenuWindow extends JFrame implements BaseView {
             button.addActionListener(actionEvent -> new AnalyzeDataWindow(this, it.getId()).setVisible(true));
             add(button);
         });
+
+//        if (role == 1) {
+            JButton adminBtn = new JButton("Админ");
+            adminBtn.addActionListener(e -> {
+                new InsertQueryWindow(id).setVisible(true);
+                setVisible(false);
+            });
+            add(adminBtn);
+//        }
     }
 }

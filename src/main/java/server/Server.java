@@ -92,6 +92,8 @@ public class Server {
                                 getVisualizationForChart(outputStream, queryContent);
                             } else if (clientAction.equalsIgnoreCase(Actions.GET_MENU_BUTTONS)) {
                                 getMenuButtons(outputStream);
+                            } else if (clientAction.equalsIgnoreCase(Actions.INSERT_BUTTON)) {
+                                insertButton(outputStream, queryContent);
                             }
                         }
                     } catch (IOException e) {
@@ -102,6 +104,31 @@ public class Server {
                 e.printStackTrace();
             }
         }
+    }
+
+    private void insertButton(OutputStream outputStream, String queryContent) {
+        String[] arr = queryContent.split("--");
+        String name = arr[0];
+        String query1 = arr[1];
+        String query2 = arr[2];
+        String query3 = arr[3];
+        String query4 = arr[4];
+        String query5 = arr[5];
+        String query6 = arr[6];
+
+        try {
+            statement.executeUpdate("insert into screen_analyze(name) values('" + name + "');");
+            ResultSet resultSet = statement.executeQuery("select max(id) from screen_analyze;");
+            resultSet.first();
+            int index = resultSet.getInt("max(id)");
+            statement.executeUpdate("insert into query(id_but, id_act, analyze_text, visual_text) values(" + index + ", 1, '" + query1 + "', '" + query2 + "');");
+            statement.executeUpdate("insert into query(id_but, id_act, analyze_text, visual_text) values(" + index + ", 2, '" + query3 + "', '" + query4 + "');");
+            statement.executeUpdate("insert into query(id_but, id_act, analyze_text, visual_text) values(" + index + ", 3, '" + query5 + "', '" + query6 + "');");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        sendDataToClient(outputStream, "added");
     }
 
     private void getMenuButtons(OutputStream outputStream) {
